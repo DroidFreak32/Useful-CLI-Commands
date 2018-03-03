@@ -1,0 +1,157 @@
+*** POWERSHELL REFERENCE : https://docs.microsoft.com/en-us/powershell/scripting/powershell-scripting?view=powershell-5.1
+*** BASH REFERENCE : https://www.gnu.org/software/bash/manual/bash.html
+*** POWERSHELL TUTORIALS : https://mva.microsoft.com/en-us/training-courses/getting-started-with-microsoft-powershell-8276
+
+BASH:-
+Some commands: 
+command --help (||opens documentation for the command||)
+man [SECTION_NO] command (||manual pages for given command||)
+ls [-la] [directory] (|| -l long listing of files and directories in given directory, -a show all files ||)
+cd relative_path|absolute_path
+pwd (|| show current working directory ||)
+mkdir folder_name [-pv] [-m] (|| create a folder.  p allows mkdir to create parent directories, v verbose, m is mode, use to set directory permissions||)
+rmdir [-p] (|| remove empty directory. p remove parent directories too if they are empty ||)
+history - previously typed commands.
+clear - clear screen.
+cp source destination [-r] [-v]
+mv source destination (|| move or rename file ||)
+rm -rf (|| remove file ||)
+cat - (|| read a file ||)
+less - (|| read a file a page at a time. g go to the beginning of a file, G go to end of text file, /search_word, q quit, ||)
+head - (|| read first 10 lines of file||)
+tail - (|| read last 10 lines of file ||)
+grep string filename [-r] [-n] [-w] [-e] [--exclude|--include] [--exclude-dir|--include-dir] - (|| look through filename file for string. r recursively. w match whole word. n only on line number n. e match regex pattern.||)
+echo string - (|| write string to stdout ||)
+> - (|| truncate and then write output to file ||)
+>> - (|| append output to file ||)
+| - (|| redirect output of one program to input of another ||)
+2> - (|| redirect stderror to file. 0=stdin, 1=stdout, 2=stderr ||)
+< - (|| stdin redirector operator. Read from file instead of taking input from console ||)
+touch [-c] filename (|| create file, or change time last accessed to now. c makes it so that it doesn't create a new file if th||)
+ping ipaddress|domainname (|| pings a device, which replies with echo reply ||)
+traceroute ipaddress|domainname (|| pings each device on a route to ipaddress ||)
+mtr ipaddress|domainname (|| realtime, continuous traceroute ||)
+nc ipaddress|domainname portno [-vz](|| short for netcat. Establish TCP connection at portno, send application data. z, no input/output mode. v verbose ||)
+sudo su [username] (|| login as root(or username if specified) ||)
+passwd [-e] user(|| change user's password. if e set, make password expire so that they have to change it at next login ||)
+sudo useradd username (|| create user with name username ||)
+sudo userdel username (|| delete user with name username ||)
+chmod u+xw filename (|| add execution and write permission for file for owner ||)
+chmod u-x filename (|| remove permission for owner of file to execute ||)
+chmod ugo+x filename (|| give users, groups and others permission to execute filename ||)
+chmod 777 filename (|| give all permissions to all users
+sudo chown username filename (|| change owner of some file ||)
+sudo chgrp grpname filename (|| change group of filename to grpname ||)
+sudo chmod [u+s|4###] filename (|| enable setuid bit, which allows program to run as root ||)
+sudo chmod [u+g|2###] filename (|| enable setgid bit, which allows programs to run with permissions of the group of the file ||)
+sudo chmod [+t|1###] filename (|| set sticky bit, which allows users to access and modify, but not delete, file ||)
+dpkg -i package (|| install package ||)
+dpkg -r package (|| remove package ||)
+dpkg -l (|| list debian packages installed on the machine ||)
+dpkg -L package (|| list files installed by package ||)
+dpkg -S /etc/host.conf (|| name package which installed /etc/host.conf ||)
+7z -e (|| use 7zip to extract archive into current folder ||)
+tar -cjvf file.tar.bz2 file1 file2 (|| create compressed tar file from file1 and file2. http://www.linfo.org/tar.html ||)
+tar -xjvf file.tar.bz2 (|| decompress and extract contents of tar file into current directory ||)
+tar -rf file.tar file 3 (|| add file3 to file.tar ||)
+tar -f file.tar --delete file1 file2 (||delete file 1 and file 2 ||)
+tar -tf file.tar (|| list contents of uncomressed archive without extracting them ||)
+
+
+Some important directories:
+/bin - stores essential binaries(executable program files)
+/etc - stores config files for various programs
+/home - holds user documents, media, etc
+/proc - info about currently running processes
+/usr - holds user installed programs {
+	/usr/bin - user programs
+	/usr/sbin - system admin commands not needed on root filesystem
+	/usr/share/[man|info|doc] - Manual pages, GNU info documents, other misc documentation files
+	/usr/include - header files for the C programming language
+	/usr/lib - Unchanging data files for programs and subsystems, including site-wide config files
+	/usr/local - Locally installed software. Reserved solely for the local administrator. No upgrades to distribution will overwrite any extra software.
+}
+/var - system logs, any constantly changing files
+/dev/null (|| black hole for data you don't want 
+/etc/group (|| see group memberships for all groups. f1: groupname, f2: grouppassword(x means encrypted and stored in another file, f3: groupid, f4: userlist ||)
+/etc/passwd (|| users. f1: nameofuser, f2: user password(x means encrypted and stored in another file), f3: userid, ||)
+/etc/shadow (|| file where password hashes are stored. can only be ready by root ||)
+
+Other misc. stuff
+Ways software might be packaged:
+	.deb files(Debian and its derivatives)
+	.tar.bz2 archives 
+package dependencies ref: https://help.ubuntu.com/lts/serverguide/dpkg.html
+	
+
+POWERSHELL:- 
+Some commands:
+Get-Help command [-full] (|| get documentation ||)
+ls [directory] [-Force] (|| list files in current directory, -Force for all files ||)
+cd relative path from curr dir|absolute path (|| change directories ||)
+pwd (|| show path of current working directory ||)
+mkdir folder_name (|| make directory (escape character is backtick, alternatively surround name of folder with single quotes) ||)
+history (|| show command history ||)
+Ctrl+R - search for previously typed command. Alternatively, use '#' and type part of command, tab to scroll through possible options
+clear - removes all commands currently on screen. 
+cp source destination [-Recurse] [-Verbose] (|| copy from source to destination ||)
+* - wildcard. 0 or more
+mv source destination (|| move or rename file ||)
+rm|remove file [-Force] [-Recurse]
+cat [-Head n] [-Tail n] - (|| read the contents of a text file ||)
+more - (|| read a page at a time. space advances by one page, enter by one line, q exits file ||)
+Get-Alias - (|| get true name of powershell command under alias ||)
+Select-String|sls string file - (|| look for particular string in file ||)
+Turn on indexing by file-content on the Windows Search Service
+echo|Write-Output string (|| write a string to command line or file ||)
+> - (|| truncate and then write output to file ||)
+>> - (|| append output to file ||)
+| - (|| redirect output of one program to input of another ||)
+2> - (|| redirect stderror to file. 0=stdin, 1=stdout, 2=stderr ||)
+$null - (|| like /dev/null in linux ||)
+< - (|| stdin redirector operator. Read from file instead of taking input from console ||)
+ping ipaddress|domainname (|| pings a device, which replies with echo reply ||)
+tracert ipaddress|domainname (|| pings each device on a route to ipaddress ||)
+pathping ipaddress|domainname (|| continuous traceroute for some duration, aggregate result displayed at once ||)
+Test-NetConnection ipaddress|google.com [-port port] (|| like nc, but with more data ||)
+Get-LocalUsers (|| List local users ||)
+Get-LocalGroup (|| List local groups ||)
+Get-LocalGroupMember GroupName (|| list members of GroupName ||)
+net user username password [*|'new_password'] [/add] (|| change username's password to password. if /add set, create new user with name username ||)
+net user victor /logonpasswordchg:yes (|| make victor change his own password the next time he logs on ||)
+net user andrea /del (|| deletes user andrea ||)
+Remove-LocalUser username (|| deletes username ||)
+icacls 'file' /grant 'Everyone:(OI)(CI)(R)' (||give Everyone OI, CI, and R permissions. (remove single quotes around "Everyone:..." and put double quotes around path in icacl) ||)
+icacls 'somefile' /remove Everyone (||remove DACL ITEM from ACL for file ||)
+Compress-Archive -Path C:\path\to\fileordirectory C:\pathtoarchive.zip
+Find-Package packagename [-IncludeDependencies] (||locate package along with its dependencies||)
+Install-Package -Name package_name
+Get-Package -name package_name
+Uninstall-Package -Name package_name
+
+
+Some important directories and things:
+C:\User - like /home in bash.
+C:\Windows\WinSxS - Where SxS, or shared libraries, are stored.
+
+Misc. stuff:
+Access Control Lists(ACLs) - what file and directory permissions are assigned with
+Discretionary ACLs (DACLs) - note on what which user can do with a file
+System ACLs (SACLs) - ...
+ACLs - Read, read and execute, list folder contents(read and execute on a directory), write, modify(read,execute and write), full control(modify + change ACL and file ownership)
+dll - dynamic link libraries
+SxS - side by side assemblies. Shared libraries
+Manifest - If an app needs to use a shared library, it declares which specific library in this
+cmdlet - Commands that follow the Verb-Noun format
+
+Permissions: (reference : https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc732880(v=ws.11) )
+	(IO) - inherit only. 
+	(WD) - create files/write data
+	(AD) - create folders/append data
+	(S) - synchronize
+
+Ways software might be packaged:
+	appx
+	exes with msis
+	exes, where installation is completely custom
+	archives (which you can unzip with 7zip)
