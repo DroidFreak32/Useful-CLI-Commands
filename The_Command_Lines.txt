@@ -2,7 +2,7 @@
 *** BASH REFERENCE : https://www.gnu.org/software/bash/manual/bash.html
 *** POWERSHELL TUTORIALS : https://mva.microsoft.com/en-us/training-courses/getting-started-with-microsoft-powershell-8276
 
-BASH:-
+LINUX(UBUNTU IN PARTICULAR) & BASH:-
 Some commands: 
 command --help (||opens documentation for the command||)
 man [SECTION_NO] command (||manual pages for given command||)
@@ -56,7 +56,12 @@ tar -xjvf file.tar.bz2 (|| decompress and extract contents of tar file into curr
 tar -rf file.tar file 3 (|| add file3 to file.tar ||)
 tar -f file.tar --delete file1 file2 (||delete file 1 and file 2 ||)
 tar -tf file.tar (|| list contents of uncomressed archive without extracting them ||)
-
+sudo apt-get install package_name (|| install package ||)
+sudo apt remove package_name (|| remove package ||)
+sudo apt update (|| update repository software lists ||)
+sudo apt upgrade (|| install newer versions of existing softwares on your machine ||)
+sudo apt full-upgrade (|| update linux too ||)
+uname [-r] (|| r kernel release name, otherwise show details about current machine and operating system ||)
 
 Some important directories:
 /bin - stores essential binaries(executable program files)
@@ -76,15 +81,33 @@ Some important directories:
 /etc/group (|| see group memberships for all groups. f1: groupname, f2: grouppassword(x means encrypted and stored in another file, f3: groupid, f4: userlist ||)
 /etc/passwd (|| users. f1: nameofuser, f2: user password(x means encrypted and stored in another file), f3: userid, ||)
 /etc/shadow (|| file where password hashes are stored. can only be ready by root ||)
+/etc/apt/sources.list - list of repositories
+/dev - where devices are found
+/dev/sdA# - storage devices, where a device has a lower case letter A representing the order in which it was detected, and # if it is partitioned in some way
+	/lp,/pt,/tty - line printers, pseudo-terminals, terminals
+/dev/zero - accepts and discards all input, produces continuous stream of 0s
+/dev/full - produces continuous stream of zeroes, returns disk full message when written to 
+/dev/[random|u] - produces variable-length stream of pseudo-random numbers
 
 Other misc. stuff
 Ways software might be packaged:
 	.deb files(Debian and its derivatives)
 	.tar.bz2 archives 
 package dependencies ref: https://help.ubuntu.com/lts/serverguide/dpkg.html
-	
+Repositories - Servers that act like a central storage location for packages 
+Personal Package Archive  - software repository for uploading source packages to be built and published as an Advanced Packaging Tool repository, by launchpad. ref: https://help.launchpad.net/Packaging/PPA 
+types of devices:
+	character devices(c) - keyboard or mouse, transmit data character by character
+	block devices(b) - transfers blocks of data, where a data block is a unit of storage
+	pseudo devices  - like /dev/null, /dev/zero, /dev/full, and /dev/random
+Kernel modules - modify kernel without really modifying the kernel
+Device file - what you'll find in /dev 
+udevd - device manager service for linux. 
 
-POWERSHELL:- 
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+WINDOWS & POWERSHELL:- 
 Some commands:
 Get-Help command [-full] (|| get documentation ||)
 ls [directory] [-Force] (|| list files in current directory, -Force for all files ||)
@@ -129,7 +152,6 @@ Install-Package -Name package_name
 Get-Package -name package_name
 Uninstall-Package -Name package_name
 
-
 Some important directories and things:
 C:\User - like /home in bash.
 C:\Windows\WinSxS - Where SxS, or shared libraries, are stored.
@@ -143,13 +165,16 @@ dll - dynamic link libraries
 SxS - side by side assemblies. Shared libraries
 Manifest - If an app needs to use a shared library, it declares which specific library in this
 cmdlet - Commands that follow the Verb-Noun format
-
+sysinternals process monitoring toolkit - see what a process does as it executes (file reads and writes and the like.) ref: https://docs.microsoft.com/en-us/sysinternals/downloads/procmon
+Orca.exe - create or edit windows installer packages ref: https://msdn.microsoft.com/en-us/library/windows/desktop/aa370557(v=vs.85).aspx
+Windows installers - ref: https://msdn.microsoft.com/en-us/library/windows/desktop/aa367563(v=vs.85).aspx
+device manager - manage devices and their drivers (uninstall, update, and disable device drivers/devices)
+p&p - plug and play
 Permissions: (reference : https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc732880(v=ws.11) )
 	(IO) - inherit only. 
 	(WD) - create files/write data
 	(AD) - create folders/append data
 	(S) - synchronize
-
 Ways software might be packaged:
 	appx
 	exes with msis
