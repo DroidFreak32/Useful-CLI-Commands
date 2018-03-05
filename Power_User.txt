@@ -63,6 +63,23 @@ sudo apt upgrade (|| install newer versions of existing softwares on your machin
 sudo apt full-upgrade (|| update linux too ||)
 sudo apt install -f (|| install missing dependencies ||)
 uname [-r] (|| r kernel release name, otherwise show details about current machine and operating system ||)
+parted -l (|| list disks connected to computer ||)
+parted /dev/sdb (|| run interactive parted on sdb ||){
+	print (|| show attributes of current disk ||)
+	mklabel gpt (|| set disk label ||)
+	mkpart type_of_partition filesystem start_of_disk end_of_disk (|| make a partition with following parameters. (eg mkpart primary ext4 1024 2048) ||)
+}
+sudo mkfs -t ext4 /dev/sdb1 (|| format file system on that partition as ext4 ||)
+sudo mount /dev/sdA# /my/mount/folder (|| mount the device on /my/mount/folder/ ||)
+sudo umount [/dev/sdA#|/my/mount/folder] (|| unmount the device ||)
+sudo blkid (|| list block device ids, aka storage device ids ||)
+sudo mkswap /dev/sdb2 (|| make swap partition swap space. Use parted to make this a linux-swap partition first ||)
+sudo swapon /dev/sdb2 (|| enable swap on current device ||)
+ln -s file file_symlink (|| create symbolic link to file ||)
+ln file file_symlink (|| create hardlink to file ||)
+du -h (|| find disk utilization of current file or directory. -h makes makes measurements human readable ||)
+df -h (|| print free space available on entire machine ||)
+fschk /dev/sdb (|| repair filesystem manually. MAKE SURE /dev/sdb IS NOT MOUNTED WHEN USING THIS COMMAND ||)
 
 
 Some important directories:
@@ -90,6 +107,10 @@ Some important directories:
 /dev/zero - accepts and discards all input, produces continuous stream of 0s
 /dev/full - produces continuous stream of zeroes, returns disk full message when written to 
 /dev/[random|u] - produces variable-length stream of pseudo-random numbers
+/etc/fstab - list of universally unique device IDs, their mount points, their file system type, some other info, and how they are to be initialized. Read by mount process, both at startup and when it is run by a user
+{
+}
+
 
 Other misc. stuff
 Ways software might be packaged:
@@ -105,6 +126,9 @@ types of devices:
 Kernel modules - modify kernel without really modifying the kernel
 Device file - what you'll find in /dev 
 udevd - device manager service for linux. 
+linux-swap - ref: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/installation_guide/s2-diskpartrecommend-ppc#id4394007
+inode table - stores information about files on the file system 
+inode - an entry on the inode table
 
 
 _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -163,7 +187,10 @@ Diskpart - a CLI tool for disk partitioning and file system formatting  ref: htt
 	active (|| make current partition active ||)
 	format FS=NTFS label=my-thumb-drive quick(|| format drive with the NTFS file system, set drive's label to my-thumb-drive without doing a full scan ||)
 }
-
+mklink [/H] file_symlink file (|| create symbolic link to file (Hard link if /H) ||)
+du (|| ref: https://docs.microsoft.com/en-us/sysinternals/downloads/du ||)
+fsutil repair query C: (|| check Windows self heal status ||)
+chkdsk [/F] D: (|| check disk D: for disk corruption, failures, etc, and fix if possible ||)
 
 Some important directories and things:
 C:\User - like /home in bash.
@@ -193,3 +220,8 @@ Ways software might be packaged:
 	exes with msis
 	exes, where installation is completely custom
 	archives (which you can unzip with 7zip)
+Master File Table - table which holds information of files on an NTFS file system. 
+	file record number - index of a file's entry on the MFT
+	shortcut - file which has a reference to some destination, which it takes you to if you double click on it.
+	symbolic link - entry on MTR which is treated just like original file 
+	hard link - entry which points to the file record number, not to the file. The filename might change, and the hardlink will still point to it
