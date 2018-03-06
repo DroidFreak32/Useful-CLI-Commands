@@ -3,7 +3,9 @@
 *** POWERSHELL TUTORIALS : https://mva.microsoft.com/en-us/training-courses/getting-started-with-microsoft-powershell-8276
 
 LINUX(UBUNTU IN PARTICULAR) & BASH:-
-Some commands: 
+
+
+Some commands:
 command --help (||opens documentation for the command||)
 man [SECTION_NO] command (||manual pages for given command||)
 ls [-la] [directory] (|| -l long listing of files and directories in given directory, -a show all files ||)
@@ -27,11 +29,13 @@ echo string - (|| write string to stdout ||)
 | - (|| redirect output of one program to input of another ||)
 2> - (|| redirect stderror to file. 0=stdin, 1=stdout, 2=stderr ||)
 < - (|| stdin redirector operator. Read from file instead of taking input from console ||)
-touch [-c] filename (|| create file, or change time last accessed to now. c makes it so that it doesn't create a new file if th||)
+touch [-c] filename (|| create file, or change time last accessed to current time. c makes it so that it doesn't create a new file if it doesn't exist ||)
+
 ping ipaddress|domainname (|| pings a device, which replies with echo reply ||)
 traceroute ipaddress|domainname (|| pings each device on a route to ipaddress ||)
 mtr ipaddress|domainname (|| realtime, continuous traceroute ||)
 nc ipaddress|domainname portno [-vz](|| short for netcat. Establish TCP connection at portno, send application data. z, no input/output mode. v verbose ||)
+
 sudo su [username] (|| login as root(or username if specified) ||)
 passwd [-e] user(|| change user's password. if e set, make password expire so that they have to change it at next login ||)
 sudo useradd username (|| create user with name username ||)
@@ -45,6 +49,7 @@ sudo chgrp grpname filename (|| change group of filename to grpname ||)
 sudo chmod [u+s|4###] filename (|| enable setuid bit, which allows program to run as root ||)
 sudo chmod [u+g|2###] filename (|| enable setgid bit, which allows programs to run with permissions of the group of the file ||)
 sudo chmod [+t|1###] filename (|| set sticky bit, which allows users to access and modify, but not delete, file ||)
+
 dpkg -i package (|| install package ||)
 dpkg -r package (|| remove package ||)
 dpkg -l (|| list debian packages installed on the machine ||)
@@ -62,6 +67,7 @@ sudo apt update (|| update repository software lists ||)
 sudo apt upgrade (|| install newer versions of existing softwares on your machine ||)
 sudo apt full-upgrade (|| update linux too ||)
 sudo apt install -f (|| install missing dependencies ||)
+
 uname [-r] (|| r kernel release name, otherwise show details about current machine and operating system ||)
 parted -l (|| list disks connected to computer ||)
 parted /dev/sdb (|| run interactive parted on sdb ||){
@@ -69,10 +75,17 @@ parted /dev/sdb (|| run interactive parted on sdb ||){
 	mklabel gpt (|| set disk label ||)
 	mkpart type_of_partition filesystem start_of_disk end_of_disk (|| make a partition with following parameters. (eg mkpart primary ext4 1024 2048) ||)
 }
+sudo fdisk -l [/dev/sdA](|| print partition information, list partitions in block ||)
+sudo fdisk /dev/sdA {
+	p - print details about partitions on the disk
+	n - create new partition
+	d - delete partition #(where # is taken from the user via prompt)
+}
 sudo mkfs -t ext4 /dev/sdb1 (|| format file system on that partition as ext4 ||)
 sudo mount /dev/sdA# /my/mount/folder (|| mount the device on /my/mount/folder/ ||)
 sudo umount [/dev/sdA#|/my/mount/folder] (|| unmount the device ||)
 sudo blkid (|| list block device ids, aka storage device ids ||)
+lsblk (|| list block devices attached to the system in a tree-like structure)
 sudo mkswap /dev/sdb2 (|| make swap partition swap space. Use parted to make this a linux-swap partition first ||)
 sudo swapon /dev/sdb2 (|| enable swap on current device ||)
 ln -s file file_symlink (|| create symbolic link to file ||)
@@ -80,6 +93,10 @@ ln file file_symlink (|| create hardlink to file ||)
 du -h (|| find disk utilization of current file or directory. -h makes makes measurements human readable ||)
 df -h (|| print free space available on entire machine ||)
 fschk /dev/sdb (|| repair filesystem manually. MAKE SURE /dev/sdb IS NOT MOUNTED WHEN USING THIS COMMAND ||)
+
+
+
+
 
 
 Some important directories:
@@ -96,7 +113,7 @@ Some important directories:
 	/usr/local - Locally installed software. Reserved solely for the local administrator. No upgrades to distribution will overwrite any extra software.
 }
 /var - system logs, any constantly changing files
-/dev/null (|| black hole for data you don't want 
+/dev/null (|| black hole for data you don't want
 /etc/group (|| see group memberships for all groups. f1: groupname, f2: grouppassword(x means encrypted and stored in another file, f3: groupid, f4: userlist ||)
 /etc/passwd (|| users. f1: nameofuser, f2: user password(x means encrypted and stored in another file), f3: userid, ||)
 /etc/shadow (|| file where password hashes are stored. can only be ready by root ||)
@@ -105,8 +122,8 @@ Some important directories:
 /dev/sdA# - storage devices, where a device has a lower case letter A representing the order in which it was detected, and # if it is partitioned in some way
 	/lp,/pt,/tty - line printers, pseudo-terminals, terminals
 /dev/zero - accepts and discards all input, produces continuous stream of 0s
-/dev/full - produces continuous stream of zeroes, returns disk full message when written to 
-/dev/[random|u] - produces variable-length stream of pseudo-random numbers
+/dev/full - produces continuous stream of zeroes, returns disk full message when written to
+/dev/[random|urandom] - produces variable-length stream of pseudo-random numbers
 /etc/fstab - list of universally unique device IDs, their mount points, their file system type, some other info, and how they are to be initialized. Read by mount process, both at startup and when it is run by a user
 {
 }
@@ -115,25 +132,25 @@ Some important directories:
 Other misc. stuff
 Ways software might be packaged:
 	.deb files(Debian and its derivatives)
-	.tar.bz2 archives 
+	.tar.bz2 archives
 package dependencies ref: https://help.ubuntu.com/lts/serverguide/dpkg.html
-Repositories - Servers that act like a central storage location for packages 
-Personal Package Archive  - software repository for uploading source packages to be built and published as an Advanced Packaging Tool repository, by launchpad. ref: https://help.launchpad.net/Packaging/PPA 
+Repositories - Servers that act like a central storage location for packages
+Personal Package Archive  - software repository for uploading source packages to be built and published as an Advanced Packaging Tool repository, by launchpad. ref: https://help.launchpad.net/Packaging/PPA
 types of devices:
 	character devices(c) - keyboard or mouse, transmit data character by character
 	block devices(b) - transfers blocks of data, where a data block is a unit of storage
 	pseudo devices  - like /dev/null, /dev/zero, /dev/full, and /dev/random
 Kernel modules - modify kernel without really modifying the kernel
-Device file - what you'll find in /dev 
-udevd - device manager service for linux. 
+Device file - what you'll find in /dev
+udevd - device manager service for linux.
 linux-swap - ref: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/installation_guide/s2-diskpartrecommend-ppc#id4394007
-inode table - stores information about files on the file system 
+inode table - stores information about files on the file system
 inode - an entry on the inode table
 
 
 _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-WINDOWS & POWERSHELL:- 
+WINDOWS & POWERSHELL:-
 Some commands:
 Get-Help command [-full] (|| get documentation ||)
 ls [directory] [-Force] (|| list files in current directory, -Force for all files ||)
@@ -142,7 +159,7 @@ pwd (|| show path of current working directory ||)
 mkdir folder_name (|| make directory (escape character is backtick, alternatively surround name of folder with single quotes) ||)
 history (|| show command history ||)
 Ctrl+R - search for previously typed command. Alternatively, use '#' and type part of command, tab to scroll through possible options
-clear - removes all commands currently on screen. 
+clear - removes all commands currently on screen.
 cp source destination [-Recurse] [-Verbose] (|| copy from source to destination ||)
 * - wildcard. 0 or more
 mv source destination (|| move or rename file ||)
@@ -159,10 +176,12 @@ echo|Write-Output string (|| write a string to command line or file ||)
 2> - (|| redirect stderror to file. 0=stdin, 1=stdout, 2=stderr ||)
 $null - (|| like /dev/null in linux ||)
 < - (|| stdin redirector operator. Read from file instead of taking input from console ||)
+
 ping ipaddress|domainname (|| pings a device, which replies with echo reply ||)
 tracert ipaddress|domainname (|| pings each device on a route to ipaddress ||)
 pathping ipaddress|domainname (|| continuous traceroute for some duration, aggregate result displayed at once ||)
 Test-NetConnection ipaddress|google.com [-port port] (|| like nc, but with more data ||)
+
 Get-LocalUsers (|| List local users ||)
 Get-LocalGroup (|| List local groups ||)
 Get-LocalGroupMember GroupName (|| list members of GroupName ||)
@@ -172,11 +191,13 @@ net user andrea /del (|| deletes user andrea ||)
 Remove-LocalUser username (|| deletes username ||)
 icacls 'file' /grant 'Everyone:(OI)(CI)(R)' (||give Everyone OI, CI, and R permissions. (remove single quotes around "Everyone:..." and put double quotes around path in icacl) ||)
 icacls 'somefile' /remove Everyone (||remove DACL ITEM from ACL for file ||)
+
 Compress-Archive -Path C:\path\to\fileordirectory C:\pathtoarchive.zip
 Find-Package packagename [-IncludeDependencies] (||locate package along with its dependencies||)
 Install-Package -Name package_name
 Get-Package -name package_name
 Uninstall-Package -Name package_name
+
 Diskpart - a CLI tool for disk partitioning and file system formatting  ref: https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-vista/cc766465(v=ws.10)
 {
 	list disk (|| list disks ||)
@@ -191,6 +212,10 @@ mklink [/H] file_symlink file (|| create symbolic link to file (Hard link if /H)
 du (|| ref: https://docs.microsoft.com/en-us/sysinternals/downloads/du ||)
 fsutil repair query C: (|| check Windows self heal status ||)
 chkdsk [/F] D: (|| check disk D: for disk corruption, failures, etc, and fix if possible ||)
+
+
+
+
 
 Some important directories and things:
 C:\User - like /home in bash.
@@ -211,7 +236,7 @@ Windows installers - ref: https://msdn.microsoft.com/en-us/library/windows/deskt
 device manager - manage devices and their drivers (uninstall, update, and disable device drivers/devices)
 p&p - plug and play
 Permissions: (reference : https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc732880(v=ws.11) )
-	(IO) - inherit only. 
+	(IO) - inherit only.
 	(WD) - create files/write data
 	(AD) - create folders/append data
 	(S) - synchronize
@@ -220,8 +245,8 @@ Ways software might be packaged:
 	exes with msis
 	exes, where installation is completely custom
 	archives (which you can unzip with 7zip)
-Master File Table - table which holds information of files on an NTFS file system. 
+Master File Table - table which holds information of files on an NTFS file system.
 	file record number - index of a file's entry on the MFT
 	shortcut - file which has a reference to some destination, which it takes you to if you double click on it.
-	symbolic link - entry on MTR which is treated just like original file 
+	symbolic link - entry on MTR which is treated just like original file
 	hard link - entry which points to the file record number, not to the file. The filename might change, and the hardlink will still point to it
