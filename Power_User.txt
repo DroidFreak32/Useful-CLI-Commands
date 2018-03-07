@@ -100,6 +100,8 @@ top (|| monitor system utilization ||)
 uptime (|| current time, how long system's been running, no. of logged in users, load average of machine, in 1, 5, and 15  minute intervals ||)
 lsof (|| list open files ||)
 
+scp /home/zobo/Documents/to_share.txt username@172.16.43.12 (|| copy to_share.txt to machine at 172.16.43.12 ||)
+
 
 Some important directories:
 /bin - stores essential binaries(executable program files)
@@ -234,6 +236,9 @@ taskkill /pid pid (|| kill process with process id pid ||)
 tasklist (|| show all currently running processes ||)
 Get-Process (|| show all currently running processes ||)
 
+pscp.exe c:\path\to\share_file.txt cindy@104.131.122.215 (|| copy share file to linux machine at 104.131.122.215 ||)
+net share ShareMe="C:\Users\Zobo\Desktop\ShareMe /grant:everyone,full (|| give everyone full access to ShareMe ||)
+
 
 Some important directories and things:
 C:\User - like /home in bash.
@@ -276,4 +281,5 @@ winlogon.exe - login process, launched by smss.exe
 csrss.exe - client server runtime subsystem. Handles running windows GUI, command line console.
 process explorer - an advance process management tool for windows
 resource monitor - a tool to monitor resource usage (compute, storage, memory, network). resource usage by a single process can be viewed through the process explorer
+mstsc.exe - Microsoft Terminal Services Client, used to create rdp connections to remote computers
 
