@@ -94,8 +94,7 @@ du -h (|| find disk utilization of current file or directory. -h makes makes mea
 df -h (|| print free space available on entire machine ||)
 fschk /dev/sdb (|| repair filesystem manually. MAKE SURE /dev/sdb IS NOT MOUNTED WHEN USING THIS COMMAND ||)
 
-
-
+ps -ef [-x] (|| get list of all processes, full details about each process. x shows processes not tied to terminals ||)
 
 
 
@@ -103,7 +102,9 @@ Some important directories:
 /bin - stores essential binaries(executable program files)
 /etc - stores config files for various programs
 /home - holds user documents, media, etc
-/proc - info about currently running processes
+/proc - info about currently running processes {
+	/proc/####/status - a file which contains detailed information about process ####
+}
 /usr - holds user installed programs {
 	/usr/bin - user programs
 	/usr/sbin - system admin commands not needed on root filesystem
@@ -146,7 +147,11 @@ udevd - device manager service for linux.
 linux-swap - ref: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/installation_guide/s2-diskpartrecommend-ppc#id4394007
 inode table - stores information about files on the file system
 inode - an entry on the inode table
-
+init - starts processes needed to get computer up and running, has a pid of 1
+Process states:
+	R - running
+	T - stopped
+	S - interruptable sleep
 
 _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
@@ -213,8 +218,9 @@ du (|| ref: https://docs.microsoft.com/en-us/sysinternals/downloads/du ||)
 fsutil repair query C: (|| check Windows self heal status ||)
 chkdsk [/F] D: (|| check disk D: for disk corruption, failures, etc, and fix if possible ||)
 
-
-
+taskkill /pid pid (|| kill process with process id pid ||)
+tasklist (|| show all currently running processes ||)
+Get-Process (|| show all currently running processes ||)
 
 
 Some important directories and things:
@@ -240,13 +246,20 @@ Permissions: (reference : https://docs.microsoft.com/en-us/previous-versions/win
 	(WD) - create files/write data
 	(AD) - create folders/append data
 	(S) - synchronize
+
 Ways software might be packaged:
 	appx
 	exes with msis
 	exes, where installation is completely custom
 	archives (which you can unzip with 7zip)
+
 Master File Table - table which holds information of files on an NTFS file system.
 	file record number - index of a file's entry on the MFT
 	shortcut - file which has a reference to some destination, which it takes you to if you double click on it.
 	symbolic link - entry on MTR which is treated just like original file
 	hard link - entry which points to the file record number, not to the file. The filename might change, and the hardlink will still point to it
+
+smss.exe - first non kernel user mode, the session manager subsystem. Sets things up for OS to work. Kicks off login process winlogon.exe, along with client server runtime subsystem.
+winlogon.exe - login process, launched by smss.exe
+csrss.exe - client server runtime subsystem. Handles running windows GUI, command line console.
+process explorer - an advance process management tool for windows
