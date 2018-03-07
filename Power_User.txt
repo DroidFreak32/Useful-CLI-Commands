@@ -95,7 +95,10 @@ df -h (|| print free space available on entire machine ||)
 fschk /dev/sdb (|| repair filesystem manually. MAKE SURE /dev/sdb IS NOT MOUNTED WHEN USING THIS COMMAND ||)
 
 ps -ef [-x] (|| get list of all processes, full details about each process. x shows processes not tied to terminals ||)
-
+kill [-SIGNAL_NO] #### (|| sends signal to process ####. without any a number specified, sends 9, or the SIGTERM signal ||)
+top (|| monitor system utilization ||)
+uptime (|| current time, how long system's been running, no. of logged in users, load average of machine, in 1, 5, and 15  minute intervals ||)
+lsof (|| list open files ||)
 
 
 Some important directories:
@@ -152,6 +155,13 @@ Process states:
 	R - running
 	T - stopped
 	S - interruptable sleep
+Process signals: 
+	SIGTERM - kill process, but give it time to clean its resources(also Ctrl^C)
+	SIGKILL - no mercy. (-KILL on kill command)
+	SIGTSTP - terminal stop, suspends process. (-TSTP on kill command, Ctrl^Z)
+	SIGCONT - continue process.
+load averages - a load average of 1 means that 1 process was running on 1 cpu for one unit of time. If the number of cores is 1 and the load average is 1.5, then that means 0.5(load average - no. of cpu cores) processes were waiting for CPU time over the last unit of time. If the number of cores is 1 and the load average is 0.5, then that means that no processes were waiting for or using the CPU for 50% of the last unit of time. (Simplified explanation - refer online for more accurate info)
+	
 
 _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
@@ -181,6 +191,8 @@ echo|Write-Output string (|| write a string to command line or file ||)
 2> - (|| redirect stderror to file. 0=stdin, 1=stdout, 2=stderr ||)
 $null - (|| like /dev/null in linux ||)
 < - (|| stdin redirector operator. Read from file instead of taking input from console ||)
+SORT -Attribute ascending|descending (|| Sort a Get result by Attribute ||)
+Select -first 3 - Property Col1, Col2, Col3 (|| select first three rows of results, and columns 1,2, and 3 ||)
 
 ping ipaddress|domainname (|| pings a device, which replies with echo reply ||)
 tracert ipaddress|domainname (|| pings each device on a route to ipaddress ||)
@@ -263,3 +275,5 @@ smss.exe - first non kernel user mode, the session manager subsystem. Sets thing
 winlogon.exe - login process, launched by smss.exe
 csrss.exe - client server runtime subsystem. Handles running windows GUI, command line console.
 process explorer - an advance process management tool for windows
+resource monitor - a tool to monitor resource usage (compute, storage, memory, network). resource usage by a single process can be viewed through the process explorer
+
