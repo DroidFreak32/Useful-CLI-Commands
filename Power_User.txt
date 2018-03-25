@@ -21,7 +21,7 @@ rm -rf (|| remove file ||)
 cat - (|| read a file ||)
 less - (|| read a file a page at a time. g go to the beginning of a file, G go to end of text file, /search_word, q quit, ||)
 head - (|| read first 10 lines of file||)
-tail - (|| read last 10 lines of file ||)
+tail [-f] (|| read last 10 lines of file, f flag means follow, follows changes made to the file while the command is still running ||)
 grep string filename [-r] [-n] [-w] [-e] [--exclude|--include] [--exclude-dir|--include-dir] - (|| look through filename file for string. r recursively. w match whole word. n only on line number n. e match regex pattern.||)
 echo string - (|| write string to stdout ||)
 > - (|| truncate and then write output to file ||)
@@ -35,6 +35,7 @@ ping ipaddress|domainname (|| pings a device, which replies with echo reply ||)
 traceroute ipaddress|domainname (|| pings each device on a route to ipaddress ||)
 mtr ipaddress|domainname (|| realtime, continuous traceroute ||)
 nc ipaddress|domainname portno [-vz](|| short for netcat. Establish TCP connection at portno, send application data. z, no input/output mode. v verbose ||)
+nslookup www.google.com (|| perform a dns server lookup, print results to console ||)
 
 sudo su [username] (|| login as root(or username if specified) ||)
 passwd [-e] user(|| change user's password. if e set, make password expire so that they have to change it at next login ||)
@@ -101,6 +102,7 @@ uptime (|| current time, how long system's been running, no. of logged in users,
 lsof (|| list open files ||)
 
 scp /home/zobo/Documents/to_share.txt username@172.16.43.12 (|| copy to_share.txt to machine at 172.16.43.12 ||)
+sudo dd if=/dev/sdA of=~/Desktop/my_usb_image.img bs=100M (|| utility for cloning disks. remember to unmount the disk being cloned ||)
 
 
 Some important directories:
@@ -118,12 +120,20 @@ Some important directories:
 	/usr/lib - Unchanging data files for programs and subsystems, including site-wide config files
 	/usr/local - Locally installed software. Reserved solely for the local administrator. No upgrades to distribution will overwrite any extra software.
 }
-/var - system logs, any constantly changing files
+/var - system logs, any constantly changing files{
+	/var/log/ - stores various logs
+	/var/log/auth.log - stores security related information
+	/var/log/kern.log - logs kernel messages
+	/var/log/dmesg - system startup messages
+	/var/log/syslog - logs everything except off events/auth events(?)
+	
+}
 /dev/null (|| black hole for data you don't want
 /etc/group (|| see group memberships for all groups. f1: groupname, f2: grouppassword(x means encrypted and stored in another file, f3: groupid, f4: userlist ||)
 /etc/passwd (|| users. f1: nameofuser, f2: user password(x means encrypted and stored in another file), f3: userid, ||)
 /etc/shadow (|| file where password hashes are stored. can only be ready by root ||)
 /etc/apt/sources.list - list of repositories
+/etc/host.conf - a file that is looked through for resolution of domain name before contacting a DNS server
 /dev - where devices are found
 /dev/sdA# - storage devices, where a device has a lower case letter A representing the order in which it was detected, and # if it is partitioned in some way
 	/lp,/pt,/tty - line printers, pseudo-terminals, terminals
@@ -228,7 +238,7 @@ Diskpart - a CLI tool for disk partitioning and file system formatting  ref: htt
 	format FS=NTFS label=my-thumb-drive quick(|| format drive with the NTFS file system, set drive's label to my-thumb-drive without doing a full scan ||)
 }
 mklink [/H] file_symlink file (|| create symbolic link to file (Hard link if /H) ||)
-du (|| ref: https://docs.microsoft.com/en-us/sysinternals/downloads/du ||)
+du dir (|| show disk usage of files in dir ref: https://docs.microsoft.com/en-us/sysinternals/downloads/du ||)
 fsutil repair query C: (|| check Windows self heal status ||)
 chkdsk [/F] D: (|| check disk D: for disk corruption, failures, etc, and fix if possible ||)
 
@@ -282,4 +292,6 @@ csrss.exe - client server runtime subsystem. Handles running windows GUI, comman
 process explorer - an advance process management tool for windows
 resource monitor - a tool to monitor resource usage (compute, storage, memory, network). resource usage by a single process can be viewed through the process explorer
 mstsc.exe - Microsoft Terminal Services Client, used to create rdp connections to remote computers
+Windows Event Viewer - Windows logging system (evntvwr.exe)
+Windows Registry - A database used by many Windows programs for storing configuration data
 

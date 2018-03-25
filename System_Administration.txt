@@ -1,0 +1,53 @@
+Physical Infrastructure Services:
+Stages of hardware lifecycle -
+ procurement ---> deployment
+      ^                |
+      |                v
+ retirement  <--- maintenance
+
+Network Services:
+FTP : Store, transfer files over the internet. Requires authentication
+SFTP : Secure version of FTP
+TFTP : For public files, like installers.
+PXE : Pre boot execution environment. Boot into software available on network.
+NTP : Network time protocol. Used to keep clock synchronized on machines connected to a network.
+
+Intranets : networks internal to a single organization or premise
+DNS : Choosing which DNS server to use : https://blog.dnsimple.com/2015/02/top-dns-servers/
+
+Email protocols:
+POP3 : Post Office Protocol, device downloads emails from server and server deletes them
+IMAP : Internet Message Access Protocol. Server stores email permanently, more or less, sends it to any authenticated device asking for it.
+SMTP : Simple message transfer protocol. Protocol for sending email.
+Setting up your own mail server  - https://www.digitalocean.com/community/tutorials/why-you-may-not-want-to-run-your-own-mail-server
+
+Security protocols:
+SSL: Secure Sockets Layer. Old, unsafe. SSL3.0 is like TLS1.0
+TLS: Successor to SSL, more secure.
+
+Cloud storage provider list: https://www.cloudwards.net/comparison/
+
+NFS : Network File System. A file system compatible with all major OSs, but which doesn't play as nice as Samba does with Windows. It is storage accessible over a network. 
+Samba : A file sharing system that does play nice with Windows, and which has a few additional features too, like printer services.
+SMB : A protocol that Samba implements.
+NAS : Network attached storage. Computers optimized for file storage, with a stripped down OS specialized in serving files. 
+
+Web servers:
+getting simple web pages using HTTP - Client: sends HTTP request; Server: sends HTTP response
+Apache2 - a popular web server program 
+
+Directory server - server containing lookup service that provides mapping between network resources and their network addresses.
+Organizational Units - containers
+LDAP - Lightweight Directory Access Protocol. Protocol used to access directory services over a network
+LDAP format - dn(distinguished name): CN(common name)=Zoheb S, OU(organisational unit)=Sysadmin, DC(domain component)=example, DC=com
+Active Directory - Native directory service for Microsoft Windows
+	> contains group policy objects, ways to manage the configuration of a Windows machine
+	> Active Directory Administrative Center
+	> Security Group: A group which determines the permissions its members have
+	> Distribution Group: A group which defines a list of users who need access to certain resources. This could be something like, say, an emailing list.
+	> GPMC - Group Policy Management Console	
+	> Windows Management Instrumentation - Objects that decide whether or not a GPO should apply to a specific computer	
+
+	> SRV record that locates our domain controller: _ldap.tcp.dc._msdcs.DOMAIN.NAME
+	> Resolve-DNSName -Type SRV -Name _ldap._tcp.dc._msdcs.example.com
+	
