@@ -1,0 +1,90 @@
+FIVE LAYER MODEL-------------------------------------- 
+
+Application 
+|
+Traffic
+|
+Networking
+|
+Data Link
+|
+Physical
+
+
+NETWORKING DEVICES ------------------------------------
+
+Cables - may be copper or fibre
+	Copper - common: Cat5, cat5e, cat6(vary voltage)
+		cat5e - greater maximum distance than cat6, but less reliable
+	Fibre - (vary light)
+	
+Collision Domain - Network segment where only one device can communicate at a time
+
+Hubs - connects many computers at once
+	all devices talk to all other devices connected to a single hub. It's up to the devices to filter out the messages meant for them
+	Layer 1 device
+
+Switch - Layer 2 device
+	Can inspect protocol data, determine which system the data is intended for, and send it to that system alone
+	
+Routers - Layer 3 devices
+	Device that can forward data between independent devices
+	Inspects IP data to decide where to send things
+	Core routers - sophisticated routers that ISPs use. Forms the backbone of the Internet. Routers share data with each other using BGP.
+
+Server - Programs or machines whose primary purpose is to provide, or "serve," data to a client.
+
+THE PHYSICAL LAYER-------------------------------
+
+Moves 1s and 0s over a physical link
+Line coding - using variations in voltage or any sort of signal to represent 1s and 0s.
+
+Twisted Pairs
+	Copper wires twisted together
+	Twisting mitigates crosstalk
+	
+Network Ports, Patch ports
+	RJ45 - Registered Jack 45. Plug which exposes wires in twisted pair cables.
+	Ports usually have two LEDs, link light and activity light
+		Link light - Cable is properly connected to two devices which are both powered on
+		Activity light - data is being sent through the port.
+
+DATA LINK LAYER----------------------------------	
+
+Ethernet - Uses the physical layer to send data so that layers above the data link layer need no knowledge of the physical layer.
+	CSMA/CD - Listen, if no data being transmitted then send, if collision detected wait for some random interval.
+	MAC address(media access control address) - globallly unique identifier attached to an individual network interface 
+		48 bit number, 6 groups of 2 hexadecimal digits.
+		First 3 octets are organizationally unique identifiers if bit1 of the first octet is 0, else, MAC address is locally administered.
+		if bit 0 = 0, unicast, else if bit0=1, multicast
+		
+	Ethernet frame
+		
+		Preamble - 8 bytes, where the last byte is the SFD, start frame delimiter
+		Destination address
+		Source address
+		Tag - 4 bytes, VLAN tag, used for making virtual LANs
+		Ether type - 2 bytes, used to describe the protocol or the contents of the frame.
+		Payload - 46-1500 bytes 
+		Frame Check Sequence - 4 bytes, represents checksum for entire frame. Uses cyclical redundancy check. If CRC calculated at receiving end is not equal to CRC transmitted, then some error in transmission occurred
+
+
+THE NETWORK LAYER-----------------------------------
+
+IP addresses - 32 bit numbers, represented by dotted decimal notation. 4 octets separated by dots, with the decimal value of each octet.
+	IP addresses belong to a network, not a device.
+	
+IPv4 datagrams -  
+
+	key: NameOfSegment(number of bits)
+								Total bytes
+								-----------
+	Version(4) Hlen(4) Service Type(8) Total Length(16)	4
+	Identification(16) Flags(3) Fragment Offset(13)		8	
+	TTL(8) Protocol(8) Header Checksum(16)			12
+	Source(32)						16
+	Destination(32)						20
+	Options(x) padding(32n - x)				32n + 20
+	Payload							0-65535
+
+
