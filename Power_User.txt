@@ -250,6 +250,9 @@ pscp.exe c:\path\to\share_file.txt cindy@104.131.122.215 (|| copy share file to 
 net share ShareMe="C:\Users\Zobo\Desktop\ShareMe /grant:everyone,full (|| give everyone full access to ShareMe ||)
 
 
+Resolve-DNSName -Type SRV -Name _ldap._tcp.dc._msdcs.example.com //get name of Domain Controller
+
+
 Some important directories and things:
 C:\User - like /home in bash.
 C:\Windows\WinSxS - Where SxS, or shared libraries, are stored.
@@ -294,4 +297,5 @@ resource monitor - a tool to monitor resource usage (compute, storage, memory, n
 mstsc.exe - Microsoft Terminal Services Client, used to create rdp connections to remote computers
 Windows Event Viewer - Windows logging system (evntvwr.exe)
 Windows Registry - A database used by many Windows programs for storing configuration data
+
 
