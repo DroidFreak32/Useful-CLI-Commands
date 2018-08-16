@@ -1,6 +1,6 @@
-######cisco router configuration#######
+##########################CISCO ROUTER CONFIGURATION##########################
 
-#to config comp as DNS
+#TO config comp as DNS
 goto config, fa0.
 set static ip address, submask
 goto settings. set gateway to router ip, dns server to dns ip 
@@ -8,7 +8,7 @@ goto services, DHCP
 fill fields,  save
 
 
-#to config router as DNS 
+#TO config router as DHCP server  
 enable
 config terminal
 interface fa0/0
@@ -16,13 +16,13 @@ ip address 192.168.10.1 255.255.255.0
 no shutdown
 ip dhcp pool net_name1
 network 192.168.10.0 255.255.255.0
-default router 192.168.10.1
+default-router 192.168.10.1
 dns-server 192.168.10.1
 end
 copy running-config startup-config
 
 
-#configuring a serial interface
+#CONFIGURING a serial interface
 int se2/0
 ip address 50.0.0.2 255.0.0.0 
 clock rate 64000
@@ -30,19 +30,89 @@ no shutdown
 exit
 
 
-#see router configuration details
+#SEE router configuration details
 do show running-config
 OR
 show running-config
 
-#name the router 
+
+#NAME the router 
 enable 
 hostname router1 
 exit
 disable
 
-#setting up rip
+
+#SETTING up rip
 enable
 config terminal
 router rip
-network terminal 30.0.0.0
+version 2 
+no auto-summary
+network 30.0.0.0
+network 20.0.0.0
+network 50.0.0.0 
+exit 
+
+
+#SEE rip details 
+enable
+show ip rip database
+
+
+#DISABLE rip 
+enable
+config terminal 
+no router rip 
+
+
+#SETUP ospf 
+enable 
+config terminal 
+router ospf 1
+network 172.16.16.0 0.0.0.255 area 0
+network 192.168.0.0 0.0.0.3 area 0 
+exit
+
+#SEE router deets 
+enable
+show ip protocol
+show ip route 
+show ip ospf 
+show ip ospf interface 
+
+
+#CONFIGURE nat
+enable
+configure terminal
+ip nat inside source static local-ip global-ip 
+int fa0/0  
+ip nat inside 
+int se2/0
+ip nat outside 
+end 
+
+
+#SEE time details 
+enable 
+show clock 
+
+
+#SET up ntp server 
+create a server 
+services, ntp, set date 
+
+
+#SET up ntp client on router 
+enable 
+config terminal 
+ntp server 1.0.0.2 
+exit 
+
+
+#SEE ntp config on router 
+show ntp status
+
+
+#SAVE current settings
+copy running-config startup-config
