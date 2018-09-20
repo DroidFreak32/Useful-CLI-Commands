@@ -100,7 +100,7 @@ end
 enable
 config terminal
 int g0/0.1
-encapsulation dot1Q [vlan no.]
+encapsulation dot1Q ([vlan no.])
 ip address 172.16.1.1 mask 255.255.255.0
 exit
 
