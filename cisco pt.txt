@@ -93,6 +93,46 @@ ip nat outside
 end 
 
 
+
+#CONFIGURE vlans
+
+## -- on router 
+enable
+config terminal
+int g0/0.1
+encapsulation dot1Q [vlan no.]
+ip address 172.16.1.1 mask 255.255.255.0
+exit
+
+## -- on server switch
+enable
+config terminal
+vtp mode server
+vtp domain wsn
+vtp password cisco
+interface range f0/1-3,g0/1
+switchport mode trunk
+vlan 2 
+name dept1
+exit
+vlan 3 
+name dept2
+exit
+vlan 4
+name dept3
+exit
+
+## -- on client switches 
+vtp mode client
+vtp domain wcn
+vtp password cisco
+int f0/4
+switchport mode access
+switchport access vlan 2
+int f0/3
+switchport mode trunk
+
+
 #SEE time details 
 enable 
 show clock 
