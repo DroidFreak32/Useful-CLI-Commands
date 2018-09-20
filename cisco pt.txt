@@ -131,6 +131,7 @@ switchport mode access
 switchport access vlan 2
 int f0/3
 switchport mode trunk
+exit
 
 
 #SEE time details 
