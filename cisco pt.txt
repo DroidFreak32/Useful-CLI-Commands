@@ -85,7 +85,7 @@ show ip ospf interface
 #CONFIGURE nat
 enable
 configure terminal
-ip nat inside source static local-ip global-ip 
+ip nat inside source static local-ip-addr global-ip-addr 
 int fa0/0  
 ip nat inside 
 int se2/0
