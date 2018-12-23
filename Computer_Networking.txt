@@ -14,7 +14,7 @@ Physical
 NETWORKING DEVICES ------------------------------------
 
 Cables - may be copper or fibre
-	Copper - common: Cat5, cat5e, cat6(vary voltage)
+	Copper - (vary voltage)common: Cat5, cat5e, cat6
 		cat5e - greater maximum distance than cat6, but less reliable
 	Fibre - (vary light)
 	
@@ -88,3 +88,75 @@ IPv4 datagrams -
 	Payload							0-65535
 
 
+Routing tables - 
+	basic columns: 
+		destination network - IP address and network mask
+			in classful routing, mask is implied in address itself. 	
+			in CIDR(Classless Interdomain Routing), separate column which specifies length, in bits, of network mask.
+			there is usually a catchall entry for networks that router doesn't understand(maybe a router higher up on hierarchy)
+		next hop - IP of next router intended for destination network, or the host the destination address denotes.
+		total hops - the number of hops between router and destination net
+		interface - the interface through which the router needs to forward a particular packet, in order for the packet to reach next hop.
+
+
+Autonomous systems: 
+	collection of networks that fall under the control of a single network operator
+	named using ASNs, Autonomous System Numbers. Allocation managed by IANA(Internet Assigned Numbers Authority)
+
+
+Interior Gateway Protocols - Route data within an autonomous system.
+	two main types: 
+		link state routing - 
+			each router advertises state of each interface. interfaces connect to other routers or networks
+			each router knows about state of every other router on the autonomous system
+			takes into account latency, bandwidth of links
+			runs algorithms against knowledge to determine best path
+			requires more memory
+			requires more processing power	
+			have come to replace distance vector protocols
+			
+		distance vector - 
+			old standard.
+			simple
+			uses list of networks known to it and how far away these networks are in terms of hops.
+			routers don't know state of autonomous system
+			routers only know their immediate neighours.
+
+
+Exterior Gateway Protocols - Route data between routers on network edges representing autonomous systems.
+
+
+Specific routing protocols - 
+	Distance Vector:
+		RIP: Routing Information Protocol
+			RIPv1 routers broadcast updates with routing table every 30 seconds
+			Uses UDP
+		EIGRP: Enhanced Interior Gateway Routing Protocol
+			uses incremental updates
+			replaced IGRP
+			supports classless IPv4 addresses
+			proprietary, owned by Cisco	
+			uses neighbour table, topology table
+			backwards compatibility with IGRP
+	Link State:
+		OSPF: Open Shortest Path First
+			supports CIDR
+			implements dijkstra's algorithm
+			adapts to changing network conditions
+			maintains link state databases
+			
+	Exterior:
+		BGP: Border Gateway Protocol
+			is a path vector protocol
+			makes decisions based on paths, network policies, rule sets
+			uses TCP as transport protocol
+
+Non-routable address space - 
+	RFC 1918: some networks defined as non-routable space
+		gateway routers won't forward traffic to this type of network
+		10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+
+
+
+
+THE TRANSPORT LAYER---------------------------------------

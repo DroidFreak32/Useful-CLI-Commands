@@ -1,0 +1,25 @@
+#PARTS OF AN OPERATING SYSTEM ------------------------------------
+
+##Kernel: Manages computer's hardware resources. Is the core of an operating system. Talks directly to the hardware.
+	Does file storage, file management.
+	Manages processes using a process scheduler.
+	Optimizes memory usage, ensure applications have enough memory to run.
+	Manages I/O, which allows us to interact with the computer.
+
+##User Space: Everything outside the kernel. System Programs, User Interfaces. 
+
+
+#FILE SYSTEMS ----------------------------------------------------
+
+	Three main components to handling files in an OS: File data, metadata, file system. File data is all the actual data belonging to a file, or a file's contents. Metadata is data about the file, like its name, type, etc. The file system is a combination of metadata and procedures that allow files to be stored on a storage device.
+	
+
+	Different OSs often use different file systems. Common ones: NTFS, ext4, HFS+. Journaled file systems do a better job of saving data in case of some kind of failure.
+	Data is written in blocks, for better utilization of storage space. All of a file's data need not be stored in the same place.
+	
+#BOOT PROCESS -----------------------------------------------------
+ 1. BIOS initializes computers hardware, runs POST to make sure everything is good to go.
+ 2. Depending on BIOS settings, a boot device is selected. Can be hard disk, can be USB device attached to computer. Computer searches for a boot loader in each device in boot order.
+ 3. Loads bootloader and executes program. The program loads a larger and more complex program, eventually loading kernel.
+ 4. Kernel loads up drivers to allow hardware and software to talk.
+ 5. System processes and user space items are launched, like login and desktop environment.

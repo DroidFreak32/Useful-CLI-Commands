@@ -1,0 +1,4 @@
+1. Before jumping to investigate a problem, ask questions, like "When did you start having this issue?" "What is the issue exactly?" etc.
+2. Narrow down causes for the problem.
+3. Dig through logs to look for the error.
+4. Start with the quickest step first.
