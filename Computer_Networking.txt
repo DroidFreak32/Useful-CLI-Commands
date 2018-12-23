@@ -160,3 +160,53 @@ Non-routable address space -
 
 
 THE TRANSPORT LAYER---------------------------------------
+Basically responsible for multiplexing, demultiplexing traffic at hosts, managing end-to-end connections and so on.
+
+port - 16 bit number used to direct traffic to specific services.
+	eg. HTTP uses port 80, FTP 21
+	0 used in communications between programs on same computer
+	1 - 1023 system ports, well known ports, like HTTP, FTP
+	1024 - 49151 registered ports, other network services.
+	49152 - 65535 ephemeral ports. used in establishing outbound connections. clients usually assigned ephemeral ports.
+
+socket - IP Address + ":" + port number
+
+TCP header - 
+							total bytes---
+							______________
+							
+	Source port(16), Destination port(16)		4
+	Sequence number(32)				8
+	Acknowledgement number(32)			12
+	Hdr length(4),(6),Cntrlflgs(6),Window(16)	16
+	Chksum(16), Urgent(16)				20
+	Options, if any
+	Payload
+	
+TCP control flags: URG, ACK, PSH - push currently buffered data to app asap, RST - reset connection to recover after some failure, SYN - used in handshake, FIN - transmitting computer has no more data to send
+
+
+Three Way Handshake - 
+	SYN - establish connection
+	SYN/ACK
+	ACK
+
+Four Way Handshake - 
+	FIN - computer ready to close connection
+	ACK
+	FIN
+	ACK
+
+TCP socket states - (different OSs use different states, however)
+	LISTEN - server side. ready and listening for incoming connections.
+	SYN_SENT - client side. SYN sent but no connection
+	SYN_RECEIVED - server side. socket in listen, sent SYN/ACK, no ACK received
+	ESTABLISHED - ACK received, connection established.
+	FIN_WAIT - FIN has been sent, no ACK received
+	CLOSE_WAIT - connection closed, but application is still holding socket.
+	CLOSED - connection fully terminated.
+
+
+NETWORK SERVICES------------------------------------------------------
+
+
