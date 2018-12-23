@@ -210,3 +210,56 @@ TCP socket states - (different OSs use different states, however)
 NETWORK SERVICES------------------------------------------------------
 
 
+
+DNS: Domain Name Server(uses UDP) (port 53)
+
+	Resource Record Types: 
+		A - point a certain domain name at a certain IP address
+		AAAA - points domain name to IPv6 address
+		CNAME - redirect traffic from one domain to another(eg. facebook.com -> www.facebook.com) short for canonical name
+		MX - mail server names
+		SRV - service record. define location of specific services
+		TXT - descriptive text with domain name, originally. Now often used to communicate configuration protocols	
+		NS, SOA - define authority information about DNS zones Start Of Authority, Name Server(other servers responsible for this zone)
+
+
+	FQDN : Fully Qualified Domain Name. DNS can support up to 127 levels for a single domain name. Each section can only be 63 chars, and complete FQDN is limited to 255 chars.
+
+	full recursive resolution- 
+		root name server : 13 total root name servers, direct queries to TLD name server. Contacted via any cast.
+		TLD : Top Level Domain(the com part of .com). redirects to authoritative name servers
+		authoritative name servers : last two parts of a domain name, resolution at which any single organization may be responsible for domain lookups. domain and subdomains belonging to an entity(like www.google)
+
+
+	types - 
+		caching name server - holds recently resolved ip addresses
+			uses TTL to limit time an entry is remembered
+		recursive name server - performs full recursive resolution
+		root name server
+		TLD server
+		authoritative name server
+
+	DNS Zones - 
+		Each server is responsible for a zone
+		administrative authority of name server does not cover subdomains(eg. TLD server for .com does not cover google.com)
+		
+
+
+DHCP - Dynamic Host Configuration Protocol(UDP port 67 listen, UDP port 68 client source port)
+
+	DHCPDISCOVER - broadcast destination, 0.0.0.0 source
+	DHCPOFFER - depending on policy, offers IP addresses
+		broadcast destination, its own IP addr. source.
+	DHCPREQUEST - asks to be assigned offered IP addr.
+		source 0.0.0.0, dst 255.255.255.255
+	DHCPACK - server assigns IP addr. 
+		source - it's own, dst - 255.255.255.255
+
+NAT - Network Address Translation
+	Port Preservation - uses source port(of outgoing traffic) to direct traffic back to the right computer
+	Port Forwarding - traffic for specific destination ports delivered to specific nodes. Eg port 80 traffic goes to web server. 
+
+VPN - Virtual Private Networks
+	Uses tunnels
+	VPN client tunnels to VPN server
+	Encrypted payload that contains network, transport packet, encapsulated in another packet. VPN server unencrypts payload, and it appears as if this packet came from a device within the network
