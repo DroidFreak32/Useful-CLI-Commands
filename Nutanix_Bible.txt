@@ -1,0 +1,111 @@
+A BRIEF LESSON IN HISTORY ---------------------------------------------
+
+
+Silo: Basically something that needs its own separate department or tools to be managed, due to complexity or whatever other reason.
+
+Evolution of Datacenter:
+	Mainframe - natively converged, redundant, but costly, inflexible
+	Stand-Alone Server - More flexible, network accessed, but increased number of silos
+	Centralized Storage - needed high availability, so pooled storage = better utilization, RAID = data loss chance reduction, but more expensive, complex, new team required
+	Virtualization - OS abstracted from hardware, better utilization, but larger impact in case of node failure, lack of pooled resources, more management team
+	Virtualization Matures - Clustering = pooled resources, dynamic migration, but scale out problems, higher cost, higher storage configuration complexity
+	SSD - better I/O performance, no seek time, but controller/network became bottleneck
+	Cloud - Self serviced, fractionally consumed, contract based services.
+	Cloud Classifications - SaaS(eg. Google Search), PaaS(eg. Google App Engine, Amazon Relational Database Services), IaaS(EC2/ECS, Azure, Google Compute Engine)
+	
+
+
+
+
+Latency: L1 cache		0.5ns
+	L2 cache		5ns
+	Main memory		100ns
+	4K from SSD		150,000ns
+	1MB from memory		250,000ns
+	RTT datacenter		500,000ns
+	1MB from SSD 		1,000,000ns
+	Disk seek		10,000,000ns
+	1MB from disk		20,000,000ns
+	RTT inter-geographic	150,000,000ns
+
+	bandwidth: Fiber Channel - 4, 8, 10 Gb/s
+		   Ethernet - 1, 10 Gb/s (etc)
+	Even with fast network, there is a 10x overhead compared to non network memory access. Server side caching to alleviate overhead.
+
+
+
+
+Web-Scale:
+	Need for incremental based agile growth, with main problem being complexity
+	
+	Hyper-convergence - Combining two or more components into a single unit, ***natively*** 
+		In context of Nutanix, compute + storage
+		Benefits: single scaling unit, localized I/O, traditional compute/storage silos eliminated
+
+	Software-Defined Intelligence - Take core logic from proprietary/specialized hardware, implement in software on commodity hardware.
+		Nutanix takes traditional storage logic and puts it in software running on Nutanix Control VMs
+		Benefits - Rapid realease cycles, eliminate proprietary hardware reliance, use commodity hardware
+
+	Distributed Autonomous Systems - Distribute role that traditionally a single unit would handle, aiming for non-disruptive elegant failure of hardware. Failed components can be fixed or replaced at operator's convenience.
+		Distribute roles, mapreduce to perform distributed processing, election process in case "master" needed
+		Benefits - no single point of failure, distributed workload -> eliminate bottlenecks
+	
+	Linear Scale Out - In hyper-converged platform, when adding new nodes you scale out number of hypervisors, storage controllers, compute/storage performance/capacity, nodes participating in cluster wide ops
+		benefits: start small and scale, uniform and consistent performance at all scales
+
+
+PRISM-----------------------------------------------------------------
+
+What is it? - Distributed resource management platform, provides ability to manage/monitor objects and services across Nutanix environment.
+
+Two category capabilities - 
+	Interfaces - HTML5 UI, REST API, CLI, PowerShell, etc.
+	Management - Policy definition and compliance, service design & status, analytics and monitoring
+
+		Prism(with above capabilities)
+			    	^
+				|
+				v
+		Acropolis(VMs, Volumes, ..., Containers)
+
+Two Main Components::
+	Prism Central - Multi cluster manager. Optional. Deployed in addition to Acropolis Cluster. 1 to many management
+	Prism Element - Localized cluster management, 1 to 1, comes built in with Acropolis.
+
+
+Prism Services: 
+	Prism runs on every CVM, elects Prism leader from among themselves.
+	HTTP requests permanently redirected to Prism leader using HTTP code 301. Listens on port 80, redirects port 80 to 9440
+	
+Prism Central - Home Page(env wide), Explore Page(management & monitoring), Analysis, Alerts(env wide)
+
+Prism Element - Home, Health, VM Page, Storage Page, Hardware, Data Protection, Analysis, Alerts
+
+
+
+Usage & Troubleshooting - 
+
+	software, hypervisor upgrade: Settings -> Upgrade Software
+
+	cluster expansion: cable the nodes -> discover in current cluster through mDNS -> click 'Expand Cluster' on upper right hand corner/'Expand Cluster' from gear icon menu -> select nodes, specify ip addresses -> respond to hypervisor upgrade image -> click 'Expand Cluster'
+
+	capacity planning:
+		cluster runway section -> specific cluster 
+
+
+APIs and Interfaces -
+	
+	the main interfaces: REST, CLI(ACLI and NCLI), Scripting
+	
+	REST -  enables automation tools like Saltstack, Puppet, vRealize Operation, System Center Orchestrator, Ansible to create custom Nutanix workflows.
+		REST API explorer used to interact with API, see expected data formats
+	
+	ACLI - managing acropolis portion of Nutanix product(after release 4.1.2)
+		run 'Acli' from CVM 			(brings up ACLI prompt)
+		ACLI <command> 				(from linux shell)
+		Acli -o json				(List Acropolis nodes in cluster)
+		host.list				(list hosts)
+		net.create <TYPE>.<ID>[.<VSWITCH>]
+		 ip_config=<A.B.C.D>/<NN>		(Create network based on VLAN)
+		net.list				(list networks)
+		

@@ -8,6 +8,32 @@
 
 ##User Space: Everything outside the kernel. System Programs, User Interfaces. 
 
+GPT & MBR -----------------------------------------------------------
+MBR : contains info on how logical partitions containing file systems are organized on a medium. 
+Supports 4 physical partitions
+Contains executable code to function as a loader for any installed operating system, by passing control over to loader's second stage.
+Limits storage to 2 TiB
+Consists of 512 bytes located on first sector of drive, containing:
+	a partition table
+	bootstrap code
+
+GPT : Logical partition layout standard which forms part of UEFI
+Protective MBR, two GPTs in a GPT mass storage medium
+Supports 128 partitions
+Supports upto 18 exabyte volumes
+1 sector for MBR, 1 sector for GPT header, 32 sectors for partition table => sector 34 is first usable sector on the disk
+
+#BIOS -------------------------------------------------------------
+BIOS: reads first sector of hard drive, selects boot device to initialize
+firmware that performs hardware initialization
+designed to work with a particular motherboard, usually
+stored in flash memory
+Can't use GPT, uses MBR :: limited to 2TB
+CPU dependent
+Runs POST, selects candidate boot devices
+
+UEFI: Unified Extensible Firmware Interface. New specification that defines firmware. Replaces BIOS
+stores information about initialization and startup in .efi file, in a special partition called EFI System Partition(ESP)
 
 #FILE SYSTEMS ----------------------------------------------------
 
@@ -18,8 +44,74 @@
 	Data is written in blocks, for better utilization of storage space. All of a file's data need not be stored in the same place.
 	
 #BOOT PROCESS -----------------------------------------------------
+Outline:
  1. BIOS initializes computers hardware, runs POST to make sure everything is good to go.
  2. Depending on BIOS settings, a boot device is selected. Can be hard disk, can be USB device attached to computer. Computer searches for a boot loader in each device in boot order.
  3. Loads bootloader and executes program. The program loads a larger and more complex program, eventually loading kernel.
  4. Kernel loads up drivers to allow hardware and software to talk.
  5. System processes and user space items are launched, like login and desktop environment.
+
+Detail:
+ 1. CPU executes instruction located at reset vector 0xFFFFFF0h, which points to the firmware startup program
+ 2. Program runs POST, which detects and initializes devices like DRAM, PCI bus
+ 3. Firmware goes through list of non-volatile storage devices(in boot device sequence) until it finds a bootable device. A bootable device is one where the last 2 bytes of the first sector are AA55h
+ 4. Loads boot sector to address 7C00h. Transfers execution to the boot code
+ 5. In case of a hard disk, this is MBR, and is by definition not operating system specific. MBR checks MBR's partition table for bootable partitions(partitions with 'active' flag set).
+ 6.  MBR loads boot sector code from the active partition(known as Volume Boot Record) and executes it. If no active partition found, MBR may load a secondary boot loader.
+ 7. [GRUB]
+   1.The first stage of GRUB2 is small as it must fit into the first 512 byte sector of the hard drive, along with the partition table. It doesn't do anything but load stage 1.5
+   1.5. the first partition begins at sector 63, and MBR in sector 0, which leaves 62 512 byte sectors which store core.img, or GRUB stage 1.5. Contains a few common filesystem drivers like EXT, FAT, NTFS. Locates stage 2 files in /boot/grub2 
+   2. /boot/grub2 contains runtime kernel modules, loaded as needed from /boot/grub2/i386-pc. GRUB2 stage 2 locates and loads a Linux kernel into RAM, and to hand control of the computer to the kernel. Info about available operating systems are stored in a GRUB configuration file.
+ 8a. [Linux]
+   1. Kernels are located in the /boot directory, along with an initial RAM disk image. Kernel is loaded into memory and begins executing.
+   2. Kernel extracts itself from compressed version of file.
+   3. Kernel loads systemd(or SysV init) and turns control over to it.
+   4. systemd mounts filesystems listed in /etc/fstab, including partitions and swap files.
+   5. systemd accesses config file located in /etc/system/system/default.target to determine which state or target it should boot the host. In a desktop workstation, it is typically graphical.target, and for a server, it is typically multi-user.target. Each target has a set of dependencies defined in its config file. Dependencies are services required to run the Linux host at a specific level of functionality. A target contains subtargets, checkpoints that systemd has to pass to reach the target. Within each target, services can be started parallely, but in order to proceed to the next target, all services within a target need to be loaded.
+
+
+ local-fs-pre.target
+            |
+            v
+   (various mounts and   (various swap   (various cryptsetup
+    fsck services...)     devices...)        devices...)       (various low-level   (various low-level
+            |                  |                  |             services: udevd,     API VFS mounts:
+            v                  v                  v             tmpfiles, random     mqueue, configfs,
+     local-fs.target      swap.target     cryptsetup.target    seed, sysctl, ...)      debugfs, ...)
+            |                  |                  |                    |                    |
+            \__________________|_________________ | ___________________|____________________/
+                                                 \|/
+                                                  v
+                                           sysinit.target
+                                                  |
+             ____________________________________/|\________________________________________
+            /                  |                  |                    |                    \
+            |                  |                  |                    |                    |
+            v                  v                  |                    v                    v
+        (various           (various               |                (various          rescue.service
+       timers...)          paths...)              |               sockets...)               |
+            |                  |                  |                    |                    v
+            v                  v                  |                    v              rescue.target
+      timers.target      paths.target             |             sockets.target
+            |                  |                  |                    |
+            v                  \_________________ | ___________________/
+                                                 \|/
+                                                  v
+                                            basic.target
+                                                  |
+             ____________________________________/|                                 emergency.service
+            /                  |                  |                                         |
+            |                  |                  |                                         v
+            v                  v                  v                                 emergency.target
+        display-        (various system    (various system
+    manager.service         services           services)
+            |             required for            |
+            |            graphical UIs)           v
+            |                  |           multi-user.target
+            |                  |                  |
+            \_________________ | _________________/
+                              \|/
+                               v
+                     graphical.target
+   
+
