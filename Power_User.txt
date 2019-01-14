@@ -36,6 +36,7 @@ traceroute ipaddress|domainname (|| pings each device on a route to ipaddress ||
 mtr ipaddress|domainname (|| realtime, continuous traceroute ||)
 nc ipaddress|domainname portno [-vz](|| short for netcat. Establish TCP connection at portno, send application data. z, no input/output mode. v verbose ||)
 nslookup www.google.com (|| perform a dns server lookup, print results to console ||)
+arp -a (|| find all ip-mac mapping of all devices sitting on a network ||)
 
 sudo su [username] (|| login as root(or username if specified) ||)
 passwd [-e] user(|| change user's password. if e set, make password expire so that they have to change it at next login ||)

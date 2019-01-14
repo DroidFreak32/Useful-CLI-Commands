@@ -77,15 +77,15 @@ IP addresses - 32 bit numbers, represented by dotted decimal notation. 4 octets 
 IPv4 datagrams -  
 
 	key: NameOfSegment(number of bits)
-								Total bytes
-								-----------
-	Version(4) Hlen(4) Service Type(8) Total Length(16)	4
-	Identification(16) Flags(3) Fragment Offset(13)		8	
-	TTL(8) Protocol(8) Header Checksum(16)			12
-	Source(32)						16
-	Destination(32)						20
-	Options(x) padding(32n - x)				32n + 20
-	Payload							0-65535
+															Total bytes
+															-----------
+	Version(4) Hlen(4) Service Type(8) Total Length(16)		4
+	Identification(16) Flags(3) Fragment Offset(13)			8	
+	TTL(8) Protocol(8) Header Checksum(16)					12
+	Source(32)												16
+	Destination(32)											20
+	Options(x) padding(32n - x)								32n + 20
+	Payload													0-65535
 
 
 Routing tables - 
@@ -172,14 +172,14 @@ port - 16 bit number used to direct traffic to specific services.
 socket - IP Address + ":" + port number
 
 TCP header - 
-							total bytes---
-							______________
+													total bytes---
+													______________
 							
-	Source port(16), Destination port(16)		4
-	Sequence number(32)				8
-	Acknowledgement number(32)			12
-	Hdr length(4),(6),Cntrlflgs(6),Window(16)	16
-	Chksum(16), Urgent(16)				20
+	Source port(16), Destination port(16)			4
+	Sequence number(32)								8
+	Acknowledgement number(32)						12
+	Hdr length(4),(6),Cntrlflgs(6),Window(16)		16
+	Chksum(16), Urgent(16)							20
 	Options, if any
 	Payload
 	
