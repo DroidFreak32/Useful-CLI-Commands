@@ -8,7 +8,7 @@ goto services, DHCP
 fill fields,  save
 
 
-#TO config router as DHCP server  
+#CONFIGURE router as DHCP server  
 enable
 config terminal
 interface fa0/0
@@ -94,6 +94,7 @@ end
 
 
 
+
 #CONFIGURE vlans
 
 ## -- on router 
@@ -134,6 +135,10 @@ switchport mode trunk
 exit
 
 
+
+
+
+
 #SEE time details 
 enable 
 show clock 
@@ -157,3 +162,26 @@ show ntp status
 
 #SAVE current settings
 copy running-config startup-config
+
+#SEE mac address table
+show mac-address-table
+
+#SEE arp table
+show arp
+
+#SEE interfaces
+show interfaces
+
+#SEE routing table
+show ip route
+
+
+#CONFIG portchannel
+interface range fa0/1-2
+channel-group 1 mode active
+interface port-channel 1
+switchport mode trunk
+switchport mode trunk allowed vlan 1,2,20
+
+#SEE etherchannel configuration
+ip show etherchannel summary
