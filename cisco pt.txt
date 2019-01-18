@@ -1,14 +1,14 @@
 ##########################CISCO ROUTER CONFIGURATION##########################
 
-#TO config comp as DNS
-goto config, fa0.
+#CONFIG comp as DNS
+go to config, fa0.
 set static ip address, submask
-goto settings. set gateway to router ip, dns server to dns ip 
-goto services, DHCP
+go to settings. set gateway to router ip, dns server to dns ip
+go to services, DHCP
 fill fields,  save
 
 
-#CONFIGURE router as DHCP server  
+#CONFIGURE router as DHCP server
 enable
 config terminal
 interface fa0/0
@@ -24,9 +24,9 @@ copy running-config startup-config
 
 #CONFIGURING a serial interface
 int se2/0
-ip address 50.0.0.2 255.0.0.0 
+ip address 50.0.0.2 255.0.0.0
 clock rate 64000
-no shutdown 
+no shutdown
 exit
 
 
@@ -36,68 +36,72 @@ OR
 show running-config
 
 
-#NAME the router 
-enable 
-hostname router1 
+#NAME the router
+enable
+hostname router1
 exit
 disable
+
+
+#ADDING static entries to routing table
+ip route 10.0.0.0 255.0.0.0 serial 3
+ip route 131.108.0.0 255.255.0.0 171.65.3.4
 
 
 #SETTING up rip
 enable
 config terminal
 router rip
-version 2 
+version 2
 no auto-summary
 network 30.0.0.0
 network 20.0.0.0
-network 50.0.0.0 
-exit 
+network 50.0.0.0
+exit
 
 
-#SEE rip details 
+#SEE rip details
 enable
 show ip rip database
 
 
-#DISABLE rip 
+#DISABLE rip
 enable
-config terminal 
-no router rip 
+config terminal
+no router rip
 
 
-#SETUP ospf 
-enable 
-config terminal 
+#SETUP ospf
+enable
+config terminal
 router ospf 1
 network 172.16.16.0 0.0.0.255 area 0
-network 192.168.0.0 0.0.0.3 area 0 
+network 192.168.0.0 0.0.0.3 area 0
 exit
 
-#SEE router deets 
+#SEE router deets
 enable
 show ip protocol
-show ip route 
-show ip ospf 
-show ip ospf interface 
+show ip route
+show ip ospf
+show ip ospf interface
 
 
 #CONFIGURE nat
 enable
 configure terminal
-ip nat inside source static local-ip-addr global-ip-addr 
-int fa0/0  
-ip nat inside 
+ip nat inside source static local-ip-addr global-ip-addr
+int fa0/0
+ip nat inside
 int se2/0
-ip nat outside 
-end 
+ip nat outside
+end
 
 
 
 
 #CONFIGURE vlans
-
-## -- on router 
+## -- on router
 enable
 config terminal
 int g0/0.1
@@ -113,17 +117,17 @@ vtp domain wsn
 vtp password cisco
 interface range f0/1-3,g0/1
 switchport mode trunk
-vlan 2 
+vlan 2
 name dept1
 exit
-vlan 3 
+vlan 3
 name dept2
 exit
 vlan 4
 name dept3
 exit
 
-## -- on client switches 
+## -- on client switches
 vtp mode client
 vtp domain wcn
 vtp password cisco
@@ -132,31 +136,44 @@ switchport mode access
 switchport access vlan 2
 int f0/3
 switchport mode trunk
+switchport mode trunk allowed vlan 1,2,20
 exit
 
 
+#ASSIGN native vlan to a port
+swithcport trunk native vlan 25
 
 
+#ASSIGN dtp mode to port
+int fa0/0
+switchport mode access
+switchport mode trunk
+switchport mode dynamic auto
+switchport mode dynamic desirable
 
 
-#SEE time details 
-enable 
-show clock 
+#SEE vlan details
+show vlan
+show interfaces trunk
+
+#SEE time details
+enable
+show clock
 
 
-#SET up ntp server 
-create a server 
-services, ntp, set date 
+#SET up ntp server
+create a server
+services, ntp, set date
 
 
-#SET up ntp client on router 
-enable 
-config terminal 
-ntp server 1.0.0.2 
-exit 
+#SET up ntp client on router
+enable
+config terminal
+ntp server 1.0.0.2
+exit
 
 
-#SEE ntp config on router 
+#SEE ntp config on router
 show ntp status
 
 
@@ -181,7 +198,27 @@ interface range fa0/1-2
 channel-group 1 mode active
 interface port-channel 1
 switchport mode trunk
-switchport mode trunk allowed vlan 1,2,20
 
-#SEE etherchannel configuration
-ip show etherchannel summary
+
+#SEE etherchannel configuration (runs only if portchannels are configured, otherwise unavailable)
+do show port-channel summary
+do show etherchannel port-channel
+
+#ASSIGN ip address to interface vlan
+interface vlan 100
+ip address 192.168.10.254 255.255.255.0
+
+
+#CONFIGURE standard acl at router
+ip access-list standard DEMO
+permit host 10.0.0.10
+int f0/0
+ip access-group DEMO in
+int f0/1
+ip access-group DEMO out
+
+#CONFIGURE extended acl at router
+ip access-list extended DEMO
+deny tcp 10.0.0.10 0.0.0.63 range 0 65535 host 192.168.10.2 eq 22
+int f0/0
+ip access-group DEMO in
